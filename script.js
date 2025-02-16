@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   const puzzleContainer = document.getElementById('puzzle-container');
-  const imageSrc = 'jigsaw.jpg';  // Path to your image
+  const imageSrc = 'jigsaw.jpeg';  // Path to your image
 
   const rows = 3; // Number of rows for the puzzle (3x3 grid)
   const cols = 3; // Number of columns for the puzzle (3x3 grid)
