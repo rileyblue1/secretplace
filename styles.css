@@ -1,0 +1,27 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.puzzle-container {
+  position: relative;
+  width: 300px;  /* Width of the whole puzzle */
+  height: 300px; /* Height of the whole puzzle */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.piece {
+  width: 100px; /* Width of each puzzle piece */
+  height: 100px; /* Height of each puzzle piece */
+  background-size: 300px 300px; /* Image size (should match puzzle container size) */
+  background-repeat: no-repeat;
+  cursor: pointer;
+  position: absolute;
+}
