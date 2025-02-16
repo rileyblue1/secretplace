@@ -1,58 +1,81 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const puzzleContainer = document.getElementById('puzzle-container');
-  const imageSrc = 'jigsaw.jpeg';  // Path to your image
+// Configuration
+const imageSrc = 'jigsaw.jpeg';  // Replace with your image file path
+const rows = 3;  // Number of rows
+const cols = 3;  // Number of columns
+const puzzleArea = document.getElementById("puzzle");
+const pieceWidth = 100;  // Width of each puzzle piece
+const pieceHeight = 100; // Height of each puzzle piece
 
-  const rows = 3; // Number of rows for the puzzle (3x3 grid)
-  const cols = 3; // Number of columns for the puzzle (3x3 grid)
+// Load image and split it into pieces
+const image = new Image();
+image.src = imageSrc;
+image.onload = () => {
+    generatePuzzle(image);
+};
 
-  // Create puzzle pieces dynamically
-  function createPuzzle() {
-    let pieces = [];
+// Create puzzle pieces
+function generatePuzzle(image) {
+    puzzleArea.innerHTML = ''; // Clear any existing puzzle
+
+    let pieceIndex = 0;
+
     for (let row = 0; row < rows; row++) {
-      for (let col = 0; col < cols; col++) {
-        const piece = document.createElement('div');
-        piece.classList.add('piece');
-        piece.style.backgroundImage = `url(${imageSrc})`;
-        piece.style.backgroundPosition = `-${col * 100}px -${row * 100}px`;  // Adjust background position
-        piece.setAttribute('draggable', true);
-        piece.setAttribute('data-pos', `${row}-${col}`);
-        piece.style.left = `${Math.random() * 200}px`; // Randomize initial position
-        piece.style.top = `${Math.random() * 200}px`;
-        pieces.push(piece);
-        puzzleContainer.appendChild(piece);
-      }
+        for (let col = 0; col < cols; col++) {
+            const piece = document.createElement("div");
+            piece.classList.add("puzzle-piece");
+            
+            // Set background position to extract the correct part of the image
+            piece.style.backgroundImage = `url(${imageSrc})`;
+            piece.style.backgroundPosition = `-${col * pieceWidth}px -${row * pieceHeight}px`;
+
+            // Position the piece on the grid
+            piece.style.top = `${row * pieceHeight}px`;
+            piece.style.left = `${col * pieceWidth}px`;
+
+            // Enable drag-and-drop
+            piece.draggable = true;
+            piece.setAttribute("data-index", pieceIndex);
+            piece.addEventListener("dragstart", dragStart);
+            piece.addEventListener("dragover", dragOver);
+            piece.addEventListener("drop", drop);
+            piece.addEventListener("dragend", dragEnd);
+            
+            puzzleArea.appendChild(piece);
+            pieceIndex++;
+        }
     }
-    return pieces;
-  }
+}
 
-  // Handle drag and drop
-  let draggedPiece = null;
+// Handle drag start
+function dragStart(event) {
+    event.dataTransfer.setData("text", event.target.dataset.index);
+}
 
-  document.addEventListener('dragstart', (e) => {
-    if (e.target.classList.contains('piece')) {
-      draggedPiece = e.target;
-    }
-  });
+// Allow the drop
+function dragOver(event) {
+    event.preventDefault();
+}
 
-  puzzleContainer.addEventListener('dragover', (e) => {
-    e.preventDefault();
-  });
+// Handle drop
+function drop(event) {
+    event.preventDefault();
+    const draggedIndex = event.dataTransfer.getData("text");
+    const draggedPiece = document.querySelectorAll(".puzzle-piece")[draggedIndex];
+    const targetPiece = event.target;
 
-  puzzleContainer.addEventListener('drop', (e) => {
-    e.preventDefault();
-    if (draggedPiece) {
-      const targetPos = e.target.getBoundingClientRect();
-      const draggedPos = draggedPiece.getBoundingClientRect();
-      const diffX = e.clientX - draggedPos.width / 2;
-      const diffY = e.clientY - draggedPos.height / 2;
+    // Swap the positions of the dragged piece and target piece
+    const tempTop = draggedPiece.style.top;
+    const tempLeft = draggedPiece.style.left;
 
-      draggedPiece.style.left = `${diffX - targetPos.left}px`;
-      draggedPiece.style.top = `${diffY - targetPos.top}px`;
+    draggedPiece.style.top = targetPiece.style.top;
+    draggedPiece.style.left = targetPiece.style.left;
 
-      // Add more logic here to snap the piece to its correct position
-    }
-  });
+    targetPiece.style.top = tempTop;
+    targetPiece.style.left = tempLeft;
+}
 
-  // Initialize puzzle
-  createPuzzle();
-});
+// Handle drag end
+function dragEnd() {
+    // Optional: check if the puzzle is solved
+}
+
