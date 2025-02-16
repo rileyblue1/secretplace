@@ -1,27 +1,34 @@
+/* Basic reset for layout */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
 }
 
 .puzzle-container {
-  position: relative;
-  width: 300px;  /* Width of the whole puzzle */
-  height: 300px; /* Height of the whole puzzle */
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-start;
+    width: 600px; /* Bigger space for puzzle */
+    height: 600px; /* Bigger space for puzzle */
+    border: 5px solid #333; /* Border around the puzzle area */
+    position: relative;
+    background-color: #fff;
+    background-image: linear-gradient(90deg, #ccc 1px, transparent 1px), linear-gradient(90deg, #ccc 1px, transparent 1px);
+    background-size: 50px 50px; /* Grid lines every 50px */
 }
 
-.piece {
-  width: 100px; /* Width of each puzzle piece */
-  height: 100px; /* Height of each puzzle piece */
-  background-size: 300px 300px; /* Image size (should match puzzle container size) */
-  background-repeat: no-repeat;
-  cursor: pointer;
-  position: absolute;
+.puzzle-piece {
+    width: 100px; /* Size of each piece */
+    height: 100px; /* Size of each piece */
+    position: absolute;
+    cursor: pointer;
+    background-size: 300px 300px; /* Adjust this based on your image */
+    border: 2px solid #000; /* Optional border for puzzle pieces */
 }
